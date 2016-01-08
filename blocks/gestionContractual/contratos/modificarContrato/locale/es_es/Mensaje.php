@@ -215,8 +215,6 @@ $this->idioma ["fecha_suscrip_super"] = "Fecha Subcripción:<br>Supervisor ";
 $this->idioma ["fecha_suscrip_superTitulo"] = "Seleccione Fecha Subcripción Supervisor";
 
 
-
-
 $this->idioma ["fecha_limite"] = "Fecha Limite:<br>Ejecución Contrato ";
 $this->idioma ["fecha_limiteTitulo"] = "Seleccione Fecha límite pactada para la ejecución del contrato e interventoría";
 
@@ -228,4 +226,36 @@ $this->idioma ["observaciones_interventoriaTitulo"] = "Ingrese Observaciones Int
 $this->idioma ["botonContinuar"] = "Continuar";
 
 $this->idioma ["noDefinido"] = "Etiqueta no esta definida en locale/es_es/Mensaje.php";
+
+/*
+ * 
+ * Filtro Consulta Contrato
+ * 	
+ * 
+ * */
+
+
+
+$this->idioma ["unidad_ejecutora"] = "Unidad Ejecutora: ";
+$this->idioma ["unidad_ejecutoraTitulo"] = "Selecciones Unidad Ejecutora";
+
+
+
+$this->idioma ["vigencia_contrato"] = "N°Contrato - Vigencia: ";
+$this->idioma ["vigencia_contratoTitulo"] = "Selecciones N° Contrato y/o Vigencia";
+
+
+
+$this->idioma ["contratista"] = "Contratista: ";
+$this->idioma ["contratistaTitulo"] = "Selecciones Contratistas(Identificación - Nombre)";
+
+
+
+$this->idioma ["fecha_inicio_sub"] = "Fecha Inicial:<br>Subscripción ";
+$this->idioma ["fecha_inicio_subTitulo"] = "Seleccione Fecha Inicial";
+
+$this->idioma ["fecha_final_sub"] = "Fecha Final:<br>Subscripción ";
+$this->idioma ["fecha_final_subTitulo"] = "Seleccione Fecha Final";
+
+
 ?>

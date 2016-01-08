@@ -531,8 +531,8 @@ class Sql extends \Sql {
 				break;
 			
 			/*
-			 *
-			 *
+			 *		CONSULTA CONTRATO
+			 *		
 			 */
 		}
 		return $cadenaSql;
