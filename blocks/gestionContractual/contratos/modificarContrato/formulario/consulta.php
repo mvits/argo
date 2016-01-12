@@ -101,9 +101,9 @@
 				}
 				$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
 				$atributos ['deshabilitado'] = false;
-				$atributos ['tamanno'] = 60;
+				$atributos ['tamanno'] = 35;
 				$atributos ['maximoTamanno'] = '';
-				$atributos ['anchoEtiqueta'] = 250;
+				$atributos ['anchoEtiqueta'] = 213;
 				$tab ++;
 				
 				// Aplica atributos globales al control
@@ -111,7 +111,7 @@
 				echo $this->miFormulario->campoCuadroTexto ( $atributos );
 				unset ( $atributos );
 				
-				$esteCampo = 'id_proveedor';
+				$esteCampo = 'id_contrato';
 				$atributos ["id"] = $esteCampo; // No cambiar este nombre
 				$atributos ["tipo"] = "hidden";
 				$atributos ['estilo'] = '';
