@@ -615,6 +615,66 @@ class Sql extends \Sql {
 				$cadenaSql .= " WHERE id_contrato ='" . $variable . "'";
 				
 				break;
+			case 'Actualizar_Supervisor' :
+				
+				$cadenaSql = " UPDATE funcionario";
+				$cadenaSql .= " SET codigo_verificacion='" . $variable ['digito_supervisor'] . "'";
+				$cadenaSql .= " WHERE id_funcionario='" . $variable ['id_funcionario'] . "';";
+				
+				break;
+			
+			case 'Actualizar_Contrato' :
+				
+				$cadenaSql = " UPDATE contrato";
+				$cadenaSql .= " SET numero_contrato='" . $variable ['numero_contrato'] . "',";
+				$cadenaSql .= " fecha_sub='" . $variable ['fecha_subcripcion'] . "', ";
+				$cadenaSql .= " plazo_ejecucion='" . $variable ['plazo_ejecucion'] . "', ";
+				$cadenaSql .= " fecha_inicio='" . $variable ['fecha_inicio_poliza'] . "',";
+				$cadenaSql .= " fecha_final='" . $variable ['fecha_final_poliza'] . "', ";
+				$cadenaSql .= " valor_moneda_ext='" . $variable ['valor_contrato_moneda_ex'] . "',";
+				$cadenaSql .= " valor_tasa_cb='" . $variable ['tasa_cambio'] . "', ";
+				$cadenaSql .= " fecha_sub_super='" . $variable ['fecha_suscrip_super'] . "',";
+				$cadenaSql .= " fecha_lim_ejec='" . $variable ['fecha_limite'] . "',";
+				$cadenaSql .= " observacion_inter='" . $variable ['observaciones_interventoria'] . "', ";
+				$cadenaSql .= " observacion_contr='" . $variable ['observacionesContrato'] . "', ";
+				$cadenaSql .= " solicitud_necesidad='" . $variable ['solicitud_necesidad'] . "',";
+				$cadenaSql .= " contratista='" . $variable ['contratista'] . "',";
+				$cadenaSql .= " tipologia_contrato='" . $variable ['tipologia_especifica'] . "',";
+				$cadenaSql .= " tipo_configuracion='" . $variable ['tipo_configuracion'] . "', ";
+				$cadenaSql .= " clase_contratista='" . $variable ['clase_contratista'] . "',";
+				$cadenaSql .= " clase_contrato='" . $variable ['clase_contrato'] . "', ";
+				$cadenaSql .= " clase_compromiso='" . $variable ['tipo_compromiso'] . "',";
+				$cadenaSql .= " numero_constancia='" . $variable ['numero_constancia'] . "', ";
+				$cadenaSql .= " unidad_ejecucion_tiempo='" . $variable ['unidad_ejecucion_tiempo'] . "',";
+				$cadenaSql .= " modalidad_seleccion='" . $variable ['modalidad_seleccion'] . "',";
+				$cadenaSql .= " procedimiento='" . $variable ['procedimiento'] . "', ";
+				$cadenaSql .= " regimen_contratacion='" . $variable ['regimen_contratación'] . "',";
+				$cadenaSql .= " tipo_moneda='" . $variable ['tipo_moneda'] . "', ";
+				$cadenaSql .= " tipo_gasto='" . $variable ['tipo_gasto'] . "',";
+				$cadenaSql .= " origen_recursos='" . $variable ['origen_recursos'] . "', ";
+				$cadenaSql .= " origen_presupuesto='" . $variable ['origen_presupuesto'] . "',";
+				$cadenaSql .= " tema_corr_gst_inv='" . $variable ['tema_gasto_inversion'] . "',";
+				$cadenaSql .= " tipo_control_ejecucion='" . $variable ['tipo_control'] . "', ";
+				$cadenaSql .= " orden_contrato='" . $variable ['orden_contrato'] . "',";
+				$cadenaSql .= " identificacion_clase_contratista='" . $variable ['identificacion_clase_contratista'] . "', ";
+				$cadenaSql .= " digito_verificacion_clase_contratista='" . $variable ['digito_verificacion_clase_contratista'] . "', ";
+				$cadenaSql .= " porcentaje_clase_contratista='" . $variable ['porcentaje_clase_contratista'] . "', ";
+				$cadenaSql .= " numero_convenio='" . $variable ['numero_convenio'] . "',";
+				$cadenaSql .= " vigencia_convenio='" . $variable ['vigencia_convenio'] . "',";
+				$cadenaSql .= " supervisor='" . $variable ['supervisor'] . "'";
+				$cadenaSql .= " WHERE id_contrato='" . $variable ['id_contrato'] . "';";
+				
+				break;
+			
+			case 'Actualizar_Solicitud_necesidad' :
+				
+				$cadenaSql = " UPDATE solicitud_necesidad";
+				$cadenaSql .= " SET valor_contratacion='" . $variable ['valor_contrato'] . "',";
+				$cadenaSql .= " dependencia_destino='" . $variable ['dependencia'] . "',";
+				$cadenaSql .= " objeto_contrato='" . $variable ['objeto_contrato'] . "'";
+				$cadenaSql .= " WHERE id_sol_necesidad='" . $variable ['id_solicitud'] . "'";
+				
+				break;
 		}
 		return $cadenaSql;
 	}

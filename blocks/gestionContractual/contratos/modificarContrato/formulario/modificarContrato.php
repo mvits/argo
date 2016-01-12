@@ -90,7 +90,7 @@
 					
 					$contrato = $esteRecursoDB->ejecutarAcceso ( $cadena_sql, "busqueda" );
 					$contrato = $contrato [0];
-					var_dump ( $contrato );
+					
 					$arregloContrato = array (
 							
 							"numero_contrato" => $contrato ['numero_contrato'],
@@ -2530,6 +2530,7 @@
 			$valorCodificado .= "&opcion=" . $opcion;
 			$valorCodificado .= "&usuario=" . $_REQUEST ['usuario'];
 			$valorCodificado .= "&id_solicitud_necesidad=" . $_REQUEST ['id_solicitud_necesidad'];
+			$valorCodificado .= "&id_contrato=" . $_REQUEST ['id_contrato'];
 			
 			if ($contratista) {
 				
