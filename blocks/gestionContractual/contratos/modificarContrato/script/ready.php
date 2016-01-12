@@ -356,7 +356,8 @@ $_REQUEST ['tiempo'] = time ();
 	$("#<?php echo $this->campoSeguro('tema_gasto_inversion')?>").width(305);
 	$("#<?php echo $this->campoSeguro('tema_gasto_inversion')?>").select2();
 
-			 
+	$("#<?php echo $this->campoSeguro('supervisor')?>").width(335);
+	$("#<?php echo $this->campoSeguro('supervisor')?>").select2();
 			 
 			 	
 	$("#<?php echo $this->campoSeguro('tipo_control')?>").select2();

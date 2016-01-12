@@ -530,6 +530,14 @@ class Sql extends \Sql {
 				$cadenaSql .= " '" . $variable ['fecha_registro'] . "');";
 				break;
 			
+			case 'consultar_supervisores' :
+				
+				$cadenaSql = " SELECT DISTINCT id_funcionario identificador, identificacion||' - ' ||nombre_cp supervisor";
+				$cadenaSql .= " FROM funcionario";
+				$cadenaSql .= " WHERE estado_registro=TRUE";
+				
+				break;
+			
 			/*
 			 * CONSULTA CONTRATO
 			 *
@@ -599,9 +607,12 @@ class Sql extends \Sql {
 				$cadenaSql .= " clase_contrato, clase_compromiso, numero_constancia, unidad_ejecucion_tiempo, ";
 				$cadenaSql .= " modalidad_seleccion, procedimiento, regimen_contratacion, tipo_moneda, ";
 				$cadenaSql .= " tipo_gasto, origen_recursos, origen_presupuesto, tema_corr_gst_inv, ";
-				$cadenaSql .= " tipo_control_ejecucion, orden_contrato, estado_registro, fecha_registro";
+				$cadenaSql .= " tipo_control_ejecucion, orden_contrato,supervisor, ";
+				$cadenaSql .= " identificacion_clase_contratista,digito_verificacion_clase_contratista,porcentaje_clase_contratista,  ";
+				$cadenaSql .= " numero_convenio,vigencia_convenio, fn.codigo_verificacion codigo_verificacion_supervisor ";
 				$cadenaSql .= " FROM contrato";
-				$cadenaSql .= " WHERE id_contrato ='" . $variable  . "'";
+				$cadenaSql .= " LEFT JOIN  funcionario fn ON fn.id_funcionario=contrato.supervisor ";
+				$cadenaSql .= " WHERE id_contrato ='" . $variable . "'";
 				
 				break;
 		}

@@ -80,6 +80,10 @@
 			echo $this->miFormulario->marcoAgrupacion ( 'inicio', $atributos );
 			unset ( $atributos );
 			{
+				
+				$ventanaClaseContratista = 'none';
+				$ventanaConvenio = 'none';
+				
 				if (isset ( $_REQUEST ['opcion'] ) == 'modificarContrato') {
 					
 					$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Contrato_Particular', $_REQUEST ['id_contrato'] );
@@ -115,10 +119,30 @@
 							"tipo_control" => $contrato ['tipo_control_ejecucion'],
 							"fecha_suscrip_super" => $contrato ['fecha_sub_super'],
 							"fecha_limite" => $contrato ['fecha_lim_ejec'],
-							"observaciones_interventoria" => $contrato ['observacion_inter'] 
+							"observaciones_interventoria" => $contrato ['observacion_inter'],
+							"supervisor" => $contrato ['supervisor'],
+							"identificacion_clase_contratista" => $contrato ['identificacion_clase_contratista'],
+							"digito_verificacion_clase_contratista" => $contrato ['digito_verificacion_clase_contratista'],
+							"porcentaje_clase_contratista" => $contrato ['porcentaje_clase_contratista'],
+							"numero_convenio" => $contrato ['numero_convenio'],
+							"vigencia_convenio" => $contrato ['vigencia_convenio'],
+							"digito_supervisor" => $contrato ['codigo_verificacion_supervisor'] 
 					);
 					
 					$_REQUEST = array_merge ( $_REQUEST, $arregloContrato );
+					
+					if ($contrato ['clase_contratista'] == '33' || $contrato ['clase_contratista'] == '34') {
+						
+						$ventanaClaseContratista = 'block';
+					}
+					
+					
+					if ($_REQUEST ['tipo_compromiso'] == '46') {
+					
+						$ventanaConvenio = 'block';
+					}
+					
+					
 				}
 				// var_dump($_REQUEST);
 				$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Solicitud_Particular', $_REQUEST ['id_solicitud_necesidad'] );
@@ -1028,7 +1052,7 @@
 							unset ( $atributos );
 							
 							$atributos ["id"] = "divisionClaseContratista";
-							$atributos ["estiloEnLinea"] = "display:none";
+							$atributos ["estiloEnLinea"] = "display:".$ventanaClaseContratista;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
 							echo $this->miFormulario->division ( "inicio", $atributos );
 							unset ( $atributos );
@@ -1223,7 +1247,7 @@
 							unset ( $atributos );
 							
 							$atributos ["id"] = "divisionConvenio";
-							$atributos ["estiloEnLinea"] = "display:none";
+							$atributos ["estiloEnLinea"] = "display:".$ventanaConvenio;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
 							echo $this->miFormulario->division ( "inicio", $atributos );
 							unset ( $atributos );
@@ -2284,65 +2308,41 @@
 						{
 							
 							$esteCampo = 'supervisor';
-							$atributos ['id'] = $esteCampo;
+							$atributos ['columnas'] = 1;
 							$atributos ['nombre'] = $esteCampo;
-							$atributos ['tipo'] = 'text';
-							$atributos ['estilo'] = 'jqueryui';
-							$atributos ['marco'] = true;
-							$atributos ['estiloMarco'] = '';
+							$atributos ['id'] = $esteCampo;
+							$atributos ['evento'] = '';
+							$atributos ['deshabilitado'] = false;
 							$atributos ["etiquetaObligatorio"] = true;
-							$atributos ['columnas'] = 2;
-							$atributos ['dobleLinea'] = 0;
-							$atributos ['tabIndex'] = $tab;
-							$atributos ['etiqueta'] = $this->lenguaje->getCadena ( $esteCampo );
+							$atributos ['tab'] = $tab;
+							$atributos ['tamanno'] = 1;
+							$atributos ['estilo'] = 'jqueryui';
 							$atributos ['validar'] = 'required';
-							
-							if (isset ( $_REQUEST [$esteCampo] )) {
-								$atributos ['valor'] = $_REQUEST [$esteCampo];
-							} else {
-								$atributos ['valor'] = '';
-							}
-							$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
-							$atributos ['deshabilitado'] = false;
-							$atributos ['tamanno'] = 30;
-							$atributos ['maximoTamanno'] = '';
-							$atributos ['anchoEtiqueta'] = 213;
-							$tab ++;
-							
-							// Aplica atributos globales al control
-							$atributos = array_merge ( $atributos, $atributosGlobales );
-							echo $this->miFormulario->campoCuadroTexto ( $atributos );
-							unset ( $atributos );
-							
-							$esteCampo = 'identificacion_supervisor';
-							$atributos ['id'] = $esteCampo;
-							$atributos ['nombre'] = $esteCampo;
-							$atributos ['tipo'] = 'text';
-							$atributos ['estilo'] = 'jqueryui';
-							$atributos ['marco'] = true;
-							$atributos ['estiloMarco'] = '';
-							$atributos ["etiquetaObligatorio"] = true;
-							$atributos ['columnas'] = 2;
-							$atributos ['dobleLinea'] = 0;
-							$atributos ['tabIndex'] = $tab;
+							$atributos ['limitar'] = false;
 							$atributos ['etiqueta'] = $this->lenguaje->getCadena ( $esteCampo );
-							$atributos ['validar'] = 'required,custom[onlyNumberSp]';
-							
-							if (isset ( $_REQUEST [$esteCampo] )) {
-								$atributos ['valor'] = $_REQUEST [$esteCampo];
-							} else {
-								$atributos ['valor'] = '';
-							}
-							$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
-							$atributos ['deshabilitado'] = false;
-							$atributos ['tamanno'] = 20;
-							$atributos ['maximoTamanno'] = '';
 							$atributos ['anchoEtiqueta'] = 213;
-							$tab ++;
+							$atributos ['anchoCaja'] = 60;
+							if (isset ( $_REQUEST [$esteCampo] )) {
+								$atributos ['seleccion'] = $_REQUEST [$esteCampo];
+							} else {
+								$atributos ['seleccion'] = - 1;
+							}
 							
-							// Aplica atributos globales al control
+							$matrizItems = array (
+									array (
+											' ',
+											'Sin Solicitud de Necesidad' 
+									) 
+							);
+							
+							// $atributos ['matrizItems'] = $matrizItems;
+							
+							// Utilizar lo siguiente cuando no se pase un arreglo:
+							$atributos ['baseDatos'] = 'contractual';
+							$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "consultar_supervisores" );
+							$tab ++;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
-							echo $this->miFormulario->campoCuadroTexto ( $atributos );
+							echo $this->miFormulario->campoCuadroLista ( $atributos );
 							unset ( $atributos );
 						}
 						// ------------------Fin Division para los botones-------------------------
