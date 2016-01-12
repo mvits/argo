@@ -76,11 +76,51 @@
 			$atributos ['id'] = $esteCampo;
 			$atributos ["estilo"] = "jqueryui";
 			$atributos ['tipoEtiqueta'] = 'inicio';
-			$atributos ["leyenda"] = "Registrar Contrato";
+			$atributos ["leyenda"] = "Actualizar Contrato";
 			echo $this->miFormulario->marcoAgrupacion ( 'inicio', $atributos );
 			unset ( $atributos );
 			{
-				
+				if (isset ( $_REQUEST ['opcion'] ) == 'modificarContrato') {
+					
+					$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Contrato_Particular', $_REQUEST ['id_contrato'] );
+					
+					$contrato = $esteRecursoDB->ejecutarAcceso ( $cadena_sql, "busqueda" );
+					$contrato = $contrato [0];
+					var_dump ( $contrato );
+					$arregloContrato = array (
+							
+							"numero_contrato" => $contrato ['numero_contrato'],
+							"tipo_configuracion" => $contrato ['tipo_configuracion'],
+							"clase_contratista" => $contrato ['clase_contratista'],
+							"clase_contrato" => $contrato ['clase_contrato'],
+							"tipo_compromiso" => $contrato ['clase_compromiso'],
+							"fecha_subcripcion" => $contrato ['fecha_sub'],
+							"plazo_ejecucion" => $contrato ['plazo_ejecucion'],
+							"unidad_ejecucion_tiempo" => $contrato ['unidad_ejecucion_tiempo'],
+							"fecha_inicio_poliza" => $contrato ['fecha_inicio'],
+							"fecha_final_poliza" => $contrato ['fecha_final'],
+							"tipologia_especifica" => $contrato ['tipologia_contrato'],
+							"numero_constancia" => $contrato ['numero_constancia'],
+							"modalidad_seleccion" => $contrato ['modalidad_seleccion'],
+							"procedimiento" => $contrato ['procedimiento'],
+							"regimen_contratación" => $contrato ['regimen_contratacion'],
+							"tipo_moneda" => $contrato ['tipo_moneda'],
+							"tipo_gasto" => $contrato ['tipo_gasto'],
+							"origen_recursos" => $contrato ['origen_recursos'],
+							"origen_presupuesto" => $contrato ['origen_presupuesto'],
+							"tema_gasto_inversion" => $contrato ['tema_corr_gst_inv'],
+							"valor_contrato_moneda_ex" => $contrato ['valor_moneda_ext'],
+							"tasa_cambio" => $contrato ['valor_tasa_cb'],
+							"observacionesContrato" => $contrato ['observacion_contr'],
+							"tipo_control" => $contrato ['tipo_control_ejecucion'],
+							"fecha_suscrip_super" => $contrato ['fecha_sub_super'],
+							"fecha_limite" => $contrato ['fecha_lim_ejec'],
+							"observaciones_interventoria" => $contrato ['observacion_inter'] 
+					);
+					
+					$_REQUEST = array_merge ( $_REQUEST, $arregloContrato );
+				}
+				// var_dump($_REQUEST);
 				$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Solicitud_Particular', $_REQUEST ['id_solicitud_necesidad'] );
 				$solicitud = $esteRecursoDB->ejecutarAcceso ( $cadena_sql, "busqueda" );
 				$solicitud = $solicitud [0];
@@ -115,6 +155,7 @@
 				
 				if ($contratista) {
 					$contratista = $contratista [0];
+					
 					$arregloContratista = array (
 							
 							"tipo_identificacion" => $contratista ['tipo_documento'],
@@ -131,10 +172,11 @@
 							"correo" => $contratista ['correo'],
 							"tipo_cuenta" => $contratista ['tipo_cuenta'],
 							"numero_cuenta" => $contratista ['numero_cuenta'],
-							"entidad_bancaria" => $contratista ['nombre_banco'], 
+							"entidad_bancaria" => $contratista ['nombre_banco'],
 							"perfil" => $contratista ['perfil'],
 							"profesion" => $contratista ['profesion'],
 							"especialidad" => $contratista ['especialidad'],
+							"nacionalidad" => $contratista ['nacionalidad'] 
 					);
 					$_REQUEST = array_merge ( $_REQUEST, $arregloContratista );
 				}
@@ -2459,7 +2501,7 @@
 					
 					break;
 				
-				case 'modificarContrato' :
+				case 'modificarContratos' :
 					
 					$opcion = "ModificarContrato";
 					
@@ -2485,7 +2527,7 @@
 			$valorCodificado .= "&pagina=" . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
 			$valorCodificado .= "&bloque=" . $esteBloque ['nombre'];
 			$valorCodificado .= "&bloqueGrupo=" . $esteBloque ["grupo"];
-			$valorCodificado .= "&opcion=".$opcion;
+			$valorCodificado .= "&opcion=" . $opcion;
 			$valorCodificado .= "&usuario=" . $_REQUEST ['usuario'];
 			$valorCodificado .= "&id_solicitud_necesidad=" . $_REQUEST ['id_solicitud_necesidad'];
 			
@@ -2494,7 +2536,6 @@
 				$valorCodificado .= "&id_contratista=" . $contratista ['id_contratista'];
 				$valorCodificado .= "&id_inf_bancaria=" . $contratista ['id_inf_bancaria'];
 				$valorCodificado .= "&id_orden_contrato=" . $contratista ['id_orden_contr'];
-				
 			}
 			
 			/**

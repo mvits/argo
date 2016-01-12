@@ -161,7 +161,7 @@ class registrarForm {
 			
 			foreach (  $contratos as $valor ) {
 				$variable = "pagina=" . $miPaginaActual; // pendiente la pagina para modificar parametro
-				$variable .= "&opcion=modificarContrato";
+				$variable .= "&opcion=modificarContratos";
 				$variable .= "&id_solicitud_necesidad=" . $valor ['id_sol_necesidad'];
 				$variable .= "&id_contrato=" . $valor ['id_contrato'];
 				$variable .= "&usuario=" . $_REQUEST ['usuario'];

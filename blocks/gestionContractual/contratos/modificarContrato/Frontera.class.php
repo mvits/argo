@@ -54,8 +54,8 @@ class Frontera {
 					include_once ($this->ruta . "/formulario/resultadoContratos.php");
 					break;
 				
-				case "registroContrato" :
-					include_once ($this->ruta . "/formulario/registrarContrato.php");
+				case "modificarContratos" :
+					include_once ($this->ruta . "/formulario/modificarContrato.php");
 					break;
 				
 				case "cargarElemento" :

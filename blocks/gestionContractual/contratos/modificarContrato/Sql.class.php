@@ -591,7 +591,19 @@ class Sql extends \Sql {
 				$cadenaSql .= " ;  ";
 				
 				break;
+			case 'Consultar_Contrato_Particular' :
+				$cadenaSql = " SELECT id_contrato, vigencia, numero_contrato, fecha_sub, plazo_ejecucion, ";
+				$cadenaSql .= " fecha_inicio, fecha_final, valor_moneda_ext, valor_tasa_cb, fecha_sub_super, ";
+				$cadenaSql .= " fecha_lim_ejec, observacion_inter, observacion_contr, solicitud_necesidad, ";
+				$cadenaSql .= " contratista, tipologia_contrato, tipo_configuracion, clase_contratista, ";
+				$cadenaSql .= " clase_contrato, clase_compromiso, numero_constancia, unidad_ejecucion_tiempo, ";
+				$cadenaSql .= " modalidad_seleccion, procedimiento, regimen_contratacion, tipo_moneda, ";
+				$cadenaSql .= " tipo_gasto, origen_recursos, origen_presupuesto, tema_corr_gst_inv, ";
+				$cadenaSql .= " tipo_control_ejecucion, orden_contrato, estado_registro, fecha_registro";
+				$cadenaSql .= " FROM contrato";
+				$cadenaSql .= " WHERE id_contrato ='" . $variable  . "'";
 				
+				break;
 		}
 		return $cadenaSql;
 	}
