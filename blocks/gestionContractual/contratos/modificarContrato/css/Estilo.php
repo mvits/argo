@@ -2,11 +2,10 @@
 $indice=0;
 $estilo[$indice++]="jquery.dataTables.css";
 $estilo[$indice++]="jquery.dataTables_themeroller.css";
-
 $estilo[$indice++]="select2.css";
 $estilo[$indice++]="select2.min.css";
-
 $estilo[$indice++]="jquery.steps.css";
+$estilo[$indice++]="jquery.auto-complete.css";
 
 /*
  * Estilo Personalizado del Bloque actual

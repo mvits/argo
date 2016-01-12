@@ -73,40 +73,55 @@ class registrarForm {
 			$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
 			
 			
-			if (isset ( $_REQUEST ['vigencia'] ) && $_REQUEST ['vigencia'] != '') {
-				$vigencia = $_REQUEST ['vigencia'];
+			if (isset ( $_REQUEST ['id_contrato'] ) && $_REQUEST ['id_contrato'] != '') {
+				$contrato = $_REQUEST ['id_contrato'];
 			} else {
-				$vigencia = '';
+				$contrato = '';
 			}
 			
-			if (isset ( $_REQUEST ['num_solicitud'] ) && $_REQUEST ['num_solicitud'] != '') {
-				$numeroSolicitud = $_REQUEST ['num_solicitud'];
+			if (isset ( $_REQUEST ['unidad_ejecutora'] ) && $_REQUEST ['unidad_ejecutora'] != '') {
+				$unidad_ejecutora = $_REQUEST ['unidad_ejecutora'];
 			} else {
-				$numeroSolicitud = '';
+				$unidad_ejecutora = '';
 			}
 			
-			if (isset ( $_REQUEST ['fecha_inicio'] ) && $_REQUEST ['fecha_inicio'] != '') {
-				$fecha_inicio = $_REQUEST ['fecha_inicio'];
+			if (isset ( $_REQUEST ['clase_contrato'] ) && $_REQUEST ['clase_contrato'] != '') {
+				$clase_contrato = $_REQUEST ['clase_contrato'];
+			} else {
+				$clase_contrato = '';
+			}
+			
+			if (isset ( $_REQUEST ['id_contratista'] ) && $_REQUEST ['id_contratista'] != '') {
+				$contratista = $_REQUEST ['id_contratista'];
+			} else {
+				$contratista = '';
+			}
+			
+			
+			if (isset ( $_REQUEST ['fecha_inicio_sub'] ) && $_REQUEST ['fecha_inicio_sub'] != '') {
+				$fecha_inicio = $_REQUEST ['fecha_inicio_sub'];
 			} else {
 				$fecha_inicio = '';
 			}
 			
-			if (isset ( $_REQUEST ['fecha_final'] ) && $_REQUEST ['fecha_final'] != '') {
-				$fecha_final = $_REQUEST ['fecha_final'];
+			if (isset ( $_REQUEST ['id_contratista'] ) && $_REQUEST ['id_contratista'] != '') {
+				$fecha_final = $_REQUEST ['id_contratista'];
 			} else {
 				$fecha_final = '';
 			}
 			
 			$arreglo = array (
-					'vigencia' => $vigencia,
-					'numero_solicitud' => $numeroSolicitud,
+					'id_contrato'=>$contrato,
+					'unidad_ejecutora' => $unidad_ejecutora,
+					'clase_contrato' => $clase_contrato,
+					'id_contratista' => $contratista,
 					'fecha_inicial' => $fecha_inicio,
 					'fecha_final' => $fecha_final 
 			);
 			
-			$cadenaSql = $this->miSql->getCadenaSql ( 'consultarSolicitud', $arreglo );
+			$cadenaSql = $this->miSql->getCadenaSql ( 'consultarContrato', $arreglo );
 			
-			$solicitudes = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
+			$contratos = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
 			
 		}
 		
@@ -120,50 +135,35 @@ class registrarForm {
 		$variable .= "&usuario=" . $_REQUEST ['usuario'];
 		$variable = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $variable, $directorio );
 		
-		// ---------------- CONTROL: Cuadro de Texto --------------------------------------------------------
-		$esteCampo = 'botonRegresar';
-		$atributos ['id'] = $esteCampo;
-		$atributos ['enlace'] = $variable;
-		$atributos ['tabIndex'] = 1;
-		$atributos ['estilo'] = 'textoSubtitulo';
-		$atributos ['enlaceTexto'] = $this->lenguaje->getCadena ( $esteCampo );
-		$atributos ['ancho'] = '10%';
-		$atributos ['alto'] = '10%';
-		$atributos ['redirLugar'] = true;
-		// echo $this->miFormulario->enlace ( $atributos );
-		
-		unset ( $atributos );
-		
 		// ---------------- SECCION: Controles del Formulario -----------------------------------------------
 		
 		$esteCampo = "marcoDatosBasicos";
 		$atributos ['id'] = $esteCampo;
 		$atributos ["estilo"] = "jqueryui";
 		$atributos ['tipoEtiqueta'] = 'inicio';
-		$atributos ["leyenda"] = "Consultar  Actas Recibido";
+		$atributos ["leyenda"] = "Consultar Contratos";
 		echo $this->miFormulario->marcoAgrupacion ( 'inicio', $atributos );
 		
-		if ($solicitudes) {
+		if ($contratos) {
 			
 			echo "<table id='tabla'>";
 			
 			echo "<thead>
                              <tr>
                                 <th>Vigencia</th>
-                    			<th>Fecha Solicitud</th>            
-            					<th>Número de Solicitud</th>
-                                <th>Objeto</th>
-                                 <th>Duración</th>
-                                <th>($) Valor</th>
-			        			<th>Registrar<br>Contrato</th>
+                    			<th>Número Contrato</th>            
+            					<th>Identificacion<br>Contratista</th>
+                                <th>Nombre<br>Contratista</th>
+                                <th>Actualizar<br>Contratista</th>
                              </tr>
             </thead>
             <tbody>";
 			
-			foreach ( $solicitudes as $valor ) {
+			foreach (  $contratos as $valor ) {
 				$variable = "pagina=" . $miPaginaActual; // pendiente la pagina para modificar parametro
-				$variable .= "&opcion=registroContrato";
+				$variable .= "&opcion=modificarContrato";
 				$variable .= "&id_solicitud_necesidad=" . $valor ['id_sol_necesidad'];
+				$variable .= "&id_contrato=" . $valor ['id_contrato'];
 				$variable .= "&usuario=" . $_REQUEST ['usuario'];
 				$variable .= "&bloqueNombre=" . $_REQUEST['bloque'];
 				$variable .= "&bloqueGrupo=" . $_REQUEST['bloqueGrupo'];
@@ -175,14 +175,12 @@ class registrarForm {
 				
 				$mostrarHtml = "<tr>
                     <td><center>" . $valor ['vigencia'] . "</center></td>
-                    <td><center>" . $valor ['fecha_solicitud'] . "</center></td>		
-                    <td><center>" . $valor ['numero_solicitud'] . "</center></td>
-                   	<td><center>" . $valor ['objeto_contrato'] . "</center></td>
-                    <td><center>" . $valor ['valor_contratacion'] . "</center></td>
-                    <td><center>" . $valor ['duracion'] . "</center></td>
+                    <td><center>" . $valor ['numero_contrato'] . "</center></td>
+                   	<td><center>" . $valor ['identificacion'] . "</center></td>
+                    <td><center>" . $valor ['nombre'] . "</center></td>
                     <td><center>
                     	<a href='" . $variable . "'>
-                            <img src='" . $rutaBloque . "/css/images/contrato.png' width='15px'>
+                            <img src='" . $rutaBloque . "/css/images/modificar.png' width='15px'>
                         </a>
                   	</center> </td>
                          </tr>";
@@ -199,7 +197,7 @@ class registrarForm {
 			// echo $this->miFormulario->marcoAgrupacion("fin");
 		} else {
 			
-			$mensaje = "No Se Encontraron<br>Solicitudes de Necesidades";
+			$mensaje = "No Se Encontraron Contratos<br>Verifique los Parametros de Busqueda";
 			
 			// ---------------- CONTROL: Cuadro de Texto --------------------------------------------------------
 			$esteCampo = 'mensajeRegistro';

@@ -1,5 +1,6 @@
 <?php
-use contratos\registrarContrato\Sql;
+use contratos\modificarContrato\Sql;
+
 
 $conexion = "contractual";
 $esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
@@ -9,10 +10,29 @@ if ($_REQUEST ['funcion'] == 'NumeroSolicitud') {
 	$cadenaSql = $this->sql->getCadenaSql ( 'ConsultarNumeroNecesidades', $_REQUEST ['valor'] );
 	
 	$resultadoItems = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
-// 	var_dump($resultadoItems);exit;
-// 	$resultadoItems = $resultadoItems [0];
-	
+
 	echo json_encode ( $resultadoItems );
 }
+
+if ($_REQUEST ['funcion'] == 'consultaContratista') {
+
+	$cadenaSql = $this->sql->getCadenaSql ( 'buscar_contratista', $_GET ['query'] );
+	
+	$resultadoItems = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "busqueda" );
+
+	foreach ( $resultadoItems as $key => $values ) {
+		$keys = array (
+				'value',
+				'data'
+		);
+		$resultado [$key] = array_intersect_key ( $resultadoItems [$key], array_flip ( $keys ) );
+	}
+
+	echo '{"suggestions":' . json_encode ( $resultado ) . '}';
+}
+
+
+
+
 
 ?>
