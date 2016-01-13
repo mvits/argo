@@ -28,6 +28,46 @@ $cadena = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $cad
 $urlVigencia= $url . $cadena;
 
 
+
+// Variables
+$cadenaACodificar = "pagina=" . $this->miConfigurador->getVariableConfiguracion ( "pagina" );
+$cadenaACodificar .= "&procesarAjax=true";
+$cadenaACodificar .= "&action=index.php";
+$cadenaACodificar .= "&bloqueNombre=" . $esteBloque ["nombre"];
+$cadenaACodificar .= "&bloqueGrupo=" . $esteBloque ["grupo"];
+$cadenaACodificar .= "&funcion=consultaContrato";
+$cadenaACodificar .= "&usuario=".$_REQUEST['usuario'];
+$cadenaACodificar .="&tiempo=".$_REQUEST['tiempo'];
+
+
+// Codificar las variables
+$enlace = $this->miConfigurador->getVariableConfiguracion ( "enlace" );
+$cadena = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $cadenaACodificar, $enlace );
+
+// URL definitiva
+$urlVigenciaContrato= $url . $cadena;
+
+
+// Variables
+$cadenaACodificar = "pagina=" . $this->miConfigurador->getVariableConfiguracion ( "pagina" );
+$cadenaACodificar .= "&procesarAjax=true";
+$cadenaACodificar .= "&action=index.php";
+$cadenaACodificar .= "&bloqueNombre=" . $esteBloque ["nombre"];
+$cadenaACodificar .= "&bloqueGrupo=" . $esteBloque ["grupo"];
+$cadenaACodificar .= "&funcion=consultaContratista";
+$cadenaACodificar .= "&usuario=".$_REQUEST['usuario'];
+$cadenaACodificar .="&tiempo=".$_REQUEST['tiempo'];
+
+
+// Codificar las variables
+$enlace = $this->miConfigurador->getVariableConfiguracion ( "enlace" );
+$cadena = $this->miConfigurador->fabricaConexiones->crypto->codificar_url ( $cadenaACodificar, $enlace );
+
+// URL definitiva
+$urlContratista= $url . $cadena;
+
+
+
 ?>
 <script type='text/javascript'>
 
@@ -68,7 +108,38 @@ function NumeroSolicitud(elem, request, response){
 	   });
 	};
 
+	$(function () {
 
+		 		$( "#<?php echo $this->campoSeguro('vigencia_contrato')?>" ).keyup(function() {
+				$('#<?php echo $this->campoSeguro('vigencia_contrato') ?>').val($('#<?php echo $this->campoSeguro('vigencia_contrato') ?>').val().toUpperCase());
+				
+			        });
+
+				 $("#<?php echo $this->campoSeguro('vigencia_contrato') ?>").autocomplete({
+			    	minChars: 3,
+			    	serviceUrl: '<?php echo $urlVigenciaContrato; ?>',
+			    	onSelect: function (suggestion) {
+			        	
+			    	        $("#<?php echo $this->campoSeguro('id_contrato') ?>").val(suggestion.data);
+			    	    }
+			                
+			    });
+
+
+
+						 $("#<?php echo $this->campoSeguro('contratista') ?>").autocomplete({
+					    	minChars: 3,
+					    	serviceUrl: '<?php echo $urlContratista; ?>',
+					    	onSelect: function (suggestion) {
+					        	
+					    	        $("#<?php echo $this->campoSeguro('id_contratista') ?>").val(suggestion.data);
+					    	    }
+					                
+					    });
+						 
+
+
+		});
 
 </script>
 

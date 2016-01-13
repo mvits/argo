@@ -530,10 +530,151 @@ class Sql extends \Sql {
 				$cadenaSql .= " '" . $variable ['fecha_registro'] . "');";
 				break;
 			
+			case 'consultar_supervisores' :
+				
+				$cadenaSql = " SELECT DISTINCT id_funcionario identificador, identificacion||' - ' ||nombre_cp supervisor";
+				$cadenaSql .= " FROM funcionario";
+				$cadenaSql .= " WHERE estado_registro=TRUE";
+				
+				break;
+			
 			/*
-			 *		CONSULTA CONTRATO
-			 *		
+			 * CONSULTA CONTRATO
+			 *
 			 */
+			
+			case 'buscar_contrato' :
+				$cadenaSql = " SELECT  numero_contrato||' - ('||vigencia||')' AS  value, id_contrato  AS data  ";
+				$cadenaSql .= " FROM contrato ";
+				$cadenaSql .= "WHERE cast(numero_contrato as text) LIKE '%" . $variable . "%' ";
+				$cadenaSql .= "OR cast(vigencia as text ) LIKE '%" . $variable . "%' LIMIT 10; ";
+				break;
+			
+			case 'buscar_contratista' :
+				$cadenaSql = " SELECT  identificacion||' - '||primer_nombre||' '||segundo_nombre||' '||primer_apellido||' '||segundo_apellido  AS  value,id_contratista  AS data  ";
+				$cadenaSql .= " FROM contratista ";
+				$cadenaSql .= "WHERE cast(identificacion as text) LIKE '%" . $variable . "%' ";
+				$cadenaSql .= "OR cast(primer_nombre as text) LIKE '%" . $variable . "%' ";
+				$cadenaSql .= "OR cast(segundo_nombre as text) LIKE '%" . $variable . "%' ";
+				$cadenaSql .= "OR cast(primer_apellido as text) LIKE '%" . $variable . "%' ";
+				$cadenaSql .= "OR cast(segundo_apellido as text ) LIKE '%" . $variable . "%' LIMIT 10; ";
+				break;
+			
+			case "unidad_ejecutora_gasto" :
+				
+				$cadenaSql = "SELECT id_parametro  id, pr.descripcion valor   ";
+				$cadenaSql .= " FROM relacion_parametro rl ";
+				$cadenaSql .= "JOIN parametros pr ON pr.rel_parametro=rl.id_rel_parametro ";
+				$cadenaSql .= "WHERE rl.descripcion ='unidad_ejecutora_gasto' ORDER BY id_parametro DESC ; ";
+				break;
+			
+			case "consultarContrato" :
+				
+				$cadenaSql = " SELECT cn.id_contrato,";
+				$cadenaSql .= " cn.vigencia,";
+				$cadenaSql .= " sn.id_sol_necesidad ,";
+				$cadenaSql .= " cn.numero_contrato, ";
+				$cadenaSql .= " con.identificacion,";
+				$cadenaSql .= " con.primer_nombre||' '||con.segundo_nombre||' '||con.primer_apellido||' '||con.segundo_apellido nombre ";
+				$cadenaSql .= " FROM contrato cn ";
+				$cadenaSql .= " LEFT JOIN contratista con ON con.id_contratista= cn.contratista";
+				$cadenaSql .= " LEFT JOIN solicitud_necesidad sn ON sn.id_sol_necesidad= cn.solicitud_necesidad";
+				$cadenaSql .= " WHERE cn.estado_registro=true";
+				if ($variable ['id_contrato'] != '') {
+					$cadenaSql .= " AND cn.id_contrato='" . $variable ['id_contrato'] . "' ";
+				}
+				if ($variable ['clase_contrato'] != '') {
+					$cadenaSql .= " AND cn.clase_contrato='" . $variable ['clase_contrato'] . "' ";
+				}
+				if ($variable ['id_contratista'] != '') {
+					$cadenaSql .= " AND con.id_contratista='" . $variable ['id_contratista'] . "' ";
+				}
+				if ($variable ['unidad_ejecutora'] != '') {
+					$cadenaSql .= " AND sn.unidad_ejecutora='" . $variable ['unidad_ejecutora'] . "' ";
+				}
+				if ($variable ['fecha_inicial'] != '' && $variable ['fecha_final'] != '') {
+					$cadenaSql .= " AND cn.fecha_sub BETWEEN CAST ( '" . $variable [''] . "' AS DATE) ";
+					$cadenaSql .= " AND CAST ( '" . $variable [''] . "' AS DATE) ";
+				}
+				$cadenaSql .= " ;  ";
+				
+				break;
+			case 'Consultar_Contrato_Particular' :
+				$cadenaSql = " SELECT id_contrato, vigencia, numero_contrato, fecha_sub, plazo_ejecucion, ";
+				$cadenaSql .= " fecha_inicio, fecha_final, valor_moneda_ext, valor_tasa_cb, fecha_sub_super, ";
+				$cadenaSql .= " fecha_lim_ejec, observacion_inter, observacion_contr, solicitud_necesidad, ";
+				$cadenaSql .= " contratista, tipologia_contrato, tipo_configuracion, clase_contratista, ";
+				$cadenaSql .= " clase_contrato, clase_compromiso, numero_constancia, unidad_ejecucion_tiempo, ";
+				$cadenaSql .= " modalidad_seleccion, procedimiento, regimen_contratacion, tipo_moneda, ";
+				$cadenaSql .= " tipo_gasto, origen_recursos, origen_presupuesto, tema_corr_gst_inv, ";
+				$cadenaSql .= " tipo_control_ejecucion, orden_contrato,supervisor, ";
+				$cadenaSql .= " identificacion_clase_contratista,digito_verificacion_clase_contratista,porcentaje_clase_contratista,  ";
+				$cadenaSql .= " numero_convenio,vigencia_convenio, fn.codigo_verificacion codigo_verificacion_supervisor ";
+				$cadenaSql .= " FROM contrato";
+				$cadenaSql .= " LEFT JOIN  funcionario fn ON fn.id_funcionario=contrato.supervisor ";
+				$cadenaSql .= " WHERE id_contrato ='" . $variable . "'";
+				
+				break;
+			case 'Actualizar_Supervisor' :
+				
+				$cadenaSql = " UPDATE funcionario";
+				$cadenaSql .= " SET codigo_verificacion='" . $variable ['digito_supervisor'] . "'";
+				$cadenaSql .= " WHERE id_funcionario='" . $variable ['id_funcionario'] . "';";
+				
+				break;
+			
+			case 'Actualizar_Contrato' :
+				
+				$cadenaSql = " UPDATE contrato";
+				$cadenaSql .= " SET numero_contrato='" . $variable ['numero_contrato'] . "',";
+				$cadenaSql .= " fecha_sub='" . $variable ['fecha_subcripcion'] . "', ";
+				$cadenaSql .= " plazo_ejecucion='" . $variable ['plazo_ejecucion'] . "', ";
+				$cadenaSql .= " fecha_inicio='" . $variable ['fecha_inicio_poliza'] . "',";
+				$cadenaSql .= " fecha_final='" . $variable ['fecha_final_poliza'] . "', ";
+				$cadenaSql .= " valor_moneda_ext='" . $variable ['valor_contrato_moneda_ex'] . "',";
+				$cadenaSql .= " valor_tasa_cb='" . $variable ['tasa_cambio'] . "', ";
+				$cadenaSql .= " fecha_sub_super='" . $variable ['fecha_suscrip_super'] . "',";
+				$cadenaSql .= " fecha_lim_ejec='" . $variable ['fecha_limite'] . "',";
+				$cadenaSql .= " observacion_inter='" . $variable ['observaciones_interventoria'] . "', ";
+				$cadenaSql .= " observacion_contr='" . $variable ['observacionesContrato'] . "', ";
+				$cadenaSql .= " solicitud_necesidad='" . $variable ['solicitud_necesidad'] . "',";
+				$cadenaSql .= " contratista='" . $variable ['contratista'] . "',";
+				$cadenaSql .= " tipologia_contrato='" . $variable ['tipologia_especifica'] . "',";
+				$cadenaSql .= " tipo_configuracion='" . $variable ['tipo_configuracion'] . "', ";
+				$cadenaSql .= " clase_contratista='" . $variable ['clase_contratista'] . "',";
+				$cadenaSql .= " clase_contrato='" . $variable ['clase_contrato'] . "', ";
+				$cadenaSql .= " clase_compromiso='" . $variable ['tipo_compromiso'] . "',";
+				$cadenaSql .= " numero_constancia='" . $variable ['numero_constancia'] . "', ";
+				$cadenaSql .= " unidad_ejecucion_tiempo='" . $variable ['unidad_ejecucion_tiempo'] . "',";
+				$cadenaSql .= " modalidad_seleccion='" . $variable ['modalidad_seleccion'] . "',";
+				$cadenaSql .= " procedimiento='" . $variable ['procedimiento'] . "', ";
+				$cadenaSql .= " regimen_contratacion='" . $variable ['regimen_contratación'] . "',";
+				$cadenaSql .= " tipo_moneda='" . $variable ['tipo_moneda'] . "', ";
+				$cadenaSql .= " tipo_gasto='" . $variable ['tipo_gasto'] . "',";
+				$cadenaSql .= " origen_recursos='" . $variable ['origen_recursos'] . "', ";
+				$cadenaSql .= " origen_presupuesto='" . $variable ['origen_presupuesto'] . "',";
+				$cadenaSql .= " tema_corr_gst_inv='" . $variable ['tema_gasto_inversion'] . "',";
+				$cadenaSql .= " tipo_control_ejecucion='" . $variable ['tipo_control'] . "', ";
+				$cadenaSql .= " orden_contrato='" . $variable ['orden_contrato'] . "',";
+				$cadenaSql .= " identificacion_clase_contratista='" . $variable ['identificacion_clase_contratista'] . "', ";
+				$cadenaSql .= " digito_verificacion_clase_contratista='" . $variable ['digito_verificacion_clase_contratista'] . "', ";
+				$cadenaSql .= " porcentaje_clase_contratista='" . $variable ['porcentaje_clase_contratista'] . "', ";
+				$cadenaSql .= " numero_convenio='" . $variable ['numero_convenio'] . "',";
+				$cadenaSql .= " vigencia_convenio='" . $variable ['vigencia_convenio'] . "',";
+				$cadenaSql .= " supervisor='" . $variable ['supervisor'] . "'";
+				$cadenaSql .= " WHERE id_contrato='" . $variable ['id_contrato'] . "';";
+				
+				break;
+			
+			case 'Actualizar_Solicitud_necesidad' :
+				
+				$cadenaSql = " UPDATE solicitud_necesidad";
+				$cadenaSql .= " SET valor_contratacion='" . $variable ['valor_contrato'] . "',";
+				$cadenaSql .= " dependencia_destino='" . $variable ['dependencia'] . "',";
+				$cadenaSql .= " objeto_contrato='" . $variable ['objeto_contrato'] . "'";
+				$cadenaSql .= " WHERE id_sol_necesidad='" . $variable ['id_solicitud'] . "'";
+				
+				break;
 		}
 		return $cadenaSql;
 	}

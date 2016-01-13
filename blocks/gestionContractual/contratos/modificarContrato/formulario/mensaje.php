@@ -106,13 +106,13 @@ class registrarForm {
 					case "Inserto" :
 						
 						$atributos ['tipo'] = 'success';
-						$atributos ['mensaje'] = "Se Registro con Exito.<br>Contrato N# " . $_REQUEST ['numero_contrato'] . " y  Vigencia " . $_REQUEST ['vigencia'] . " .";
+						$atributos ['mensaje'] = "Se Actualizo al Información con Exito.<br>Contrato N# " . $_REQUEST ['numero_contrato'] . " y  Vigencia " . $_REQUEST ['vigencia'] . " .";
 						
 						break;
 					
 					case "noInserto" :
 						$atributos ['tipo'] = 'error';
-						$atributos ['mensaje'] = "Error al Registrar Contrato.<br>Verifique los Datos.";
+						$atributos ['mensaje'] = "Error al Actualizar la Información del  Contrato.<br>Verifique los Datos.";
 						break;
 				}
 				

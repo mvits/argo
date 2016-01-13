@@ -76,11 +76,75 @@
 			$atributos ['id'] = $esteCampo;
 			$atributos ["estilo"] = "jqueryui";
 			$atributos ['tipoEtiqueta'] = 'inicio';
-			$atributos ["leyenda"] = "Registrar Contrato";
+			$atributos ["leyenda"] = "Actualizar Contrato";
 			echo $this->miFormulario->marcoAgrupacion ( 'inicio', $atributos );
 			unset ( $atributos );
 			{
 				
+				$ventanaClaseContratista = 'none';
+				$ventanaConvenio = 'none';
+				
+				if (isset ( $_REQUEST ['opcion'] ) == 'modificarContrato') {
+					
+					$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Contrato_Particular', $_REQUEST ['id_contrato'] );
+					
+					$contrato = $esteRecursoDB->ejecutarAcceso ( $cadena_sql, "busqueda" );
+					$contrato = $contrato [0];
+					
+					$arregloContrato = array (
+							
+							"numero_contrato" => $contrato ['numero_contrato'],
+							"tipo_configuracion" => $contrato ['tipo_configuracion'],
+							"clase_contratista" => $contrato ['clase_contratista'],
+							"clase_contrato" => $contrato ['clase_contrato'],
+							"tipo_compromiso" => $contrato ['clase_compromiso'],
+							"fecha_subcripcion" => $contrato ['fecha_sub'],
+							"plazo_ejecucion" => $contrato ['plazo_ejecucion'],
+							"unidad_ejecucion_tiempo" => $contrato ['unidad_ejecucion_tiempo'],
+							"fecha_inicio_poliza" => $contrato ['fecha_inicio'],
+							"fecha_final_poliza" => $contrato ['fecha_final'],
+							"tipologia_especifica" => $contrato ['tipologia_contrato'],
+							"numero_constancia" => $contrato ['numero_constancia'],
+							"modalidad_seleccion" => $contrato ['modalidad_seleccion'],
+							"procedimiento" => $contrato ['procedimiento'],
+							"regimen_contratación" => $contrato ['regimen_contratacion'],
+							"tipo_moneda" => $contrato ['tipo_moneda'],
+							"tipo_gasto" => $contrato ['tipo_gasto'],
+							"origen_recursos" => $contrato ['origen_recursos'],
+							"origen_presupuesto" => $contrato ['origen_presupuesto'],
+							"tema_gasto_inversion" => $contrato ['tema_corr_gst_inv'],
+							"valor_contrato_moneda_ex" => $contrato ['valor_moneda_ext'],
+							"tasa_cambio" => $contrato ['valor_tasa_cb'],
+							"observacionesContrato" => $contrato ['observacion_contr'],
+							"tipo_control" => $contrato ['tipo_control_ejecucion'],
+							"fecha_suscrip_super" => $contrato ['fecha_sub_super'],
+							"fecha_limite" => $contrato ['fecha_lim_ejec'],
+							"observaciones_interventoria" => $contrato ['observacion_inter'],
+							"supervisor" => $contrato ['supervisor'],
+							"identificacion_clase_contratista" => $contrato ['identificacion_clase_contratista'],
+							"digito_verificacion_clase_contratista" => $contrato ['digito_verificacion_clase_contratista'],
+							"porcentaje_clase_contratista" => $contrato ['porcentaje_clase_contratista'],
+							"numero_convenio" => $contrato ['numero_convenio'],
+							"vigencia_convenio" => $contrato ['vigencia_convenio'],
+							"digito_supervisor" => $contrato ['codigo_verificacion_supervisor'] 
+					);
+					
+					$_REQUEST = array_merge ( $_REQUEST, $arregloContrato );
+					
+					if ($contrato ['clase_contratista'] == '33' || $contrato ['clase_contratista'] == '34') {
+						
+						$ventanaClaseContratista = 'block';
+					}
+					
+					
+					if ($_REQUEST ['tipo_compromiso'] == '46') {
+					
+						$ventanaConvenio = 'block';
+					}
+					
+					
+				}
+				// var_dump($_REQUEST);
 				$cadena_sql = $this->miSql->getCadenaSql ( 'Consultar_Solicitud_Particular', $_REQUEST ['id_solicitud_necesidad'] );
 				$solicitud = $esteRecursoDB->ejecutarAcceso ( $cadena_sql, "busqueda" );
 				$solicitud = $solicitud [0];
@@ -115,6 +179,7 @@
 				
 				if ($contratista) {
 					$contratista = $contratista [0];
+					
 					$arregloContratista = array (
 							
 							"tipo_identificacion" => $contratista ['tipo_documento'],
@@ -131,10 +196,11 @@
 							"correo" => $contratista ['correo'],
 							"tipo_cuenta" => $contratista ['tipo_cuenta'],
 							"numero_cuenta" => $contratista ['numero_cuenta'],
-							"entidad_bancaria" => $contratista ['nombre_banco'], 
+							"entidad_bancaria" => $contratista ['nombre_banco'],
 							"perfil" => $contratista ['perfil'],
 							"profesion" => $contratista ['profesion'],
 							"especialidad" => $contratista ['especialidad'],
+							"nacionalidad" => $contratista ['nacionalidad'] 
 					);
 					$_REQUEST = array_merge ( $_REQUEST, $arregloContratista );
 				}
@@ -986,7 +1052,7 @@
 							unset ( $atributos );
 							
 							$atributos ["id"] = "divisionClaseContratista";
-							$atributos ["estiloEnLinea"] = "display:none";
+							$atributos ["estiloEnLinea"] = "display:".$ventanaClaseContratista;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
 							echo $this->miFormulario->division ( "inicio", $atributos );
 							unset ( $atributos );
@@ -1181,7 +1247,7 @@
 							unset ( $atributos );
 							
 							$atributos ["id"] = "divisionConvenio";
-							$atributos ["estiloEnLinea"] = "display:none";
+							$atributos ["estiloEnLinea"] = "display:".$ventanaConvenio;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
 							echo $this->miFormulario->division ( "inicio", $atributos );
 							unset ( $atributos );
@@ -2242,65 +2308,41 @@
 						{
 							
 							$esteCampo = 'supervisor';
-							$atributos ['id'] = $esteCampo;
+							$atributos ['columnas'] = 1;
 							$atributos ['nombre'] = $esteCampo;
-							$atributos ['tipo'] = 'text';
-							$atributos ['estilo'] = 'jqueryui';
-							$atributos ['marco'] = true;
-							$atributos ['estiloMarco'] = '';
+							$atributos ['id'] = $esteCampo;
+							$atributos ['evento'] = '';
+							$atributos ['deshabilitado'] = false;
 							$atributos ["etiquetaObligatorio"] = true;
-							$atributos ['columnas'] = 2;
-							$atributos ['dobleLinea'] = 0;
-							$atributos ['tabIndex'] = $tab;
-							$atributos ['etiqueta'] = $this->lenguaje->getCadena ( $esteCampo );
+							$atributos ['tab'] = $tab;
+							$atributos ['tamanno'] = 1;
+							$atributos ['estilo'] = 'jqueryui';
 							$atributos ['validar'] = 'required';
-							
-							if (isset ( $_REQUEST [$esteCampo] )) {
-								$atributos ['valor'] = $_REQUEST [$esteCampo];
-							} else {
-								$atributos ['valor'] = '';
-							}
-							$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
-							$atributos ['deshabilitado'] = false;
-							$atributos ['tamanno'] = 30;
-							$atributos ['maximoTamanno'] = '';
-							$atributos ['anchoEtiqueta'] = 213;
-							$tab ++;
-							
-							// Aplica atributos globales al control
-							$atributos = array_merge ( $atributos, $atributosGlobales );
-							echo $this->miFormulario->campoCuadroTexto ( $atributos );
-							unset ( $atributos );
-							
-							$esteCampo = 'identificacion_supervisor';
-							$atributos ['id'] = $esteCampo;
-							$atributos ['nombre'] = $esteCampo;
-							$atributos ['tipo'] = 'text';
-							$atributos ['estilo'] = 'jqueryui';
-							$atributos ['marco'] = true;
-							$atributos ['estiloMarco'] = '';
-							$atributos ["etiquetaObligatorio"] = true;
-							$atributos ['columnas'] = 2;
-							$atributos ['dobleLinea'] = 0;
-							$atributos ['tabIndex'] = $tab;
+							$atributos ['limitar'] = false;
 							$atributos ['etiqueta'] = $this->lenguaje->getCadena ( $esteCampo );
-							$atributos ['validar'] = 'required,custom[onlyNumberSp]';
-							
-							if (isset ( $_REQUEST [$esteCampo] )) {
-								$atributos ['valor'] = $_REQUEST [$esteCampo];
-							} else {
-								$atributos ['valor'] = '';
-							}
-							$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
-							$atributos ['deshabilitado'] = false;
-							$atributos ['tamanno'] = 20;
-							$atributos ['maximoTamanno'] = '';
 							$atributos ['anchoEtiqueta'] = 213;
-							$tab ++;
+							$atributos ['anchoCaja'] = 60;
+							if (isset ( $_REQUEST [$esteCampo] )) {
+								$atributos ['seleccion'] = $_REQUEST [$esteCampo];
+							} else {
+								$atributos ['seleccion'] = - 1;
+							}
 							
-							// Aplica atributos globales al control
+							$matrizItems = array (
+									array (
+											' ',
+											'Sin Solicitud de Necesidad' 
+									) 
+							);
+							
+							// $atributos ['matrizItems'] = $matrizItems;
+							
+							// Utilizar lo siguiente cuando no se pase un arreglo:
+							$atributos ['baseDatos'] = 'contractual';
+							$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "consultar_supervisores" );
+							$tab ++;
 							$atributos = array_merge ( $atributos, $atributosGlobales );
-							echo $this->miFormulario->campoCuadroTexto ( $atributos );
+							echo $this->miFormulario->campoCuadroLista ( $atributos );
 							unset ( $atributos );
 						}
 						// ------------------Fin Division para los botones-------------------------
@@ -2459,7 +2501,7 @@
 					
 					break;
 				
-				case 'modificarContrato' :
+				case 'modificarContratos' :
 					
 					$opcion = "ModificarContrato";
 					
@@ -2485,16 +2527,16 @@
 			$valorCodificado .= "&pagina=" . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
 			$valorCodificado .= "&bloque=" . $esteBloque ['nombre'];
 			$valorCodificado .= "&bloqueGrupo=" . $esteBloque ["grupo"];
-			$valorCodificado .= "&opcion=".$opcion;
+			$valorCodificado .= "&opcion=" . $opcion;
 			$valorCodificado .= "&usuario=" . $_REQUEST ['usuario'];
 			$valorCodificado .= "&id_solicitud_necesidad=" . $_REQUEST ['id_solicitud_necesidad'];
+			$valorCodificado .= "&id_contrato=" . $_REQUEST ['id_contrato'];
 			
 			if ($contratista) {
 				
 				$valorCodificado .= "&id_contratista=" . $contratista ['id_contratista'];
 				$valorCodificado .= "&id_inf_bancaria=" . $contratista ['id_inf_bancaria'];
 				$valorCodificado .= "&id_orden_contrato=" . $contratista ['id_orden_contr'];
-				
 			}
 			
 			/**

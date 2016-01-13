@@ -101,9 +101,9 @@
 				}
 				$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
 				$atributos ['deshabilitado'] = false;
-				$atributos ['tamanno'] = 60;
+				$atributos ['tamanno'] = 35;
 				$atributos ['maximoTamanno'] = '';
-				$atributos ['anchoEtiqueta'] = 250;
+				$atributos ['anchoEtiqueta'] = 213;
 				$tab ++;
 				
 				// Aplica atributos globales al control
@@ -111,7 +111,7 @@
 				echo $this->miFormulario->campoCuadroTexto ( $atributos );
 				unset ( $atributos );
 				
-				$esteCampo = 'id_proveedor';
+				$esteCampo = 'id_contrato';
 				$atributos ["id"] = $esteCampo; // No cambiar este nombre
 				$atributos ["tipo"] = "hidden";
 				$atributos ['estilo'] = '';
@@ -126,9 +126,6 @@
 				$atributos = array_merge ( $atributos, $atributosGlobales );
 				echo $this->miFormulario->campoCuadroTexto ( $atributos );
 				unset ( $atributos );
-				
-				
-				
 				
 				
 				$esteCampo = 'unidad_ejecutora';
@@ -155,15 +152,15 @@
 				$matrizItems = array (
 						array (
 								' ',
-								'Sin Solicitud de Necesidad' 
+								'Sin Datos' 
 						) 
 				);
 				
-				$atributos ['matrizItems'] = $matrizItems;
+// 				$atributos ['matrizItems'] = $matrizItems;
 				
 				// Utilizar lo siguiente cuando no se pase un arreglo:
 				$atributos ['baseDatos'] = 'contractual';
-				$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "vigencias_solicitudes" );
+				$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "unidad_ejecutora_gasto" );
 				$tab ++;
 				$atributos = array_merge ( $atributos, $atributosGlobales );
 				echo $this->miFormulario->campoCuadroLista ( $atributos );
@@ -171,7 +168,7 @@
 				
 				// ---------------- CONTROL: Cuadro de Texto --------------------------------------------------------
 				$esteCampo = 'clase_contrato';
-				$atributos ['columnas'] = 1;
+				$atributos ['columnas'] = 2;
 				$atributos ['nombre'] = $esteCampo;
 				$atributos ['id'] = $esteCampo;
 				$atributos ['evento'] = '';
@@ -208,38 +205,52 @@
 				
 				// ---------------- CONTROL: Cuadro de Texto --------------------------------------------------------
 				$esteCampo = 'contratista';
-				$atributos ['columnas'] = 1;
-				$atributos ['nombre'] = $esteCampo;
 				$atributos ['id'] = $esteCampo;
-				$atributos ['evento'] = '';
-				$atributos ['deshabilitado'] = false;
-				$atributos ["etiquetaObligatorio"] = false;
-				$atributos ['tab'] = $tab;
-				$atributos ['tamanno'] = 1;
+				$atributos ['nombre'] = $esteCampo;
+				$atributos ['tipo'] = 'text';
 				$atributos ['estilo'] = 'jqueryui';
-				$atributos ['validar'] = ' ';
-				$atributos ['limitar'] = false;
+				$atributos ['marco'] = true;
+				$atributos ['estiloMarco'] = '';
+				$atributos ["etiquetaObligatorio"] = false;
+				$atributos ['columnas'] = 1;
+				$atributos ['dobleLinea'] = 0;
+				$atributos ['tabIndex'] = $tab;
 				$atributos ['etiqueta'] = $this->lenguaje->getCadena ( $esteCampo );
-				$atributos ['anchoEtiqueta'] = 213;
+				$atributos ['validar'] = '';
+				$atributos ['textoFondo'] = 'Ingrese Mínimo 3 Caracteres de Búsqueda';
 				
 				if (isset ( $_REQUEST [$esteCampo] )) {
-					$atributos ['seleccion'] = $_REQUEST [$esteCampo];
+					$atributos ['valor'] = $_REQUEST [$esteCampo];
 				} else {
-					$atributos ['seleccion'] = - 1;
+					$atributos ['valor'] = '';
 				}
-				
-				// $atributos ['matrizItems'] = $matrizItems;
-				
-				// Utilizar lo siguiente cuando no se pase un arreglo:
-				$atributos ['baseDatos'] = 'contractual';
-				$atributos ['cadena_sql'] = $this->miSql->getCadenaSql ( "tipo_clase_contrato" );
+				$atributos ['titulo'] = $this->lenguaje->getCadena ( $esteCampo . 'Titulo' );
+				$atributos ['deshabilitado'] = false;
+				$atributos ['tamanno'] = 35;
+				$atributos ['maximoTamanno'] = '';
+				$atributos ['anchoEtiqueta'] = 213;
 				$tab ++;
+				
+				// Aplica atributos globales al control
 				$atributos = array_merge ( $atributos, $atributosGlobales );
-				echo $this->miFormulario->campoCuadroLista ( $atributos );
+				echo $this->miFormulario->campoCuadroTexto ( $atributos );
 				unset ( $atributos );
 				
-				
-				
+				$esteCampo = 'id_contratista';
+				$atributos ["id"] = $esteCampo; // No cambiar este nombre
+				$atributos ["tipo"] = "hidden";
+				$atributos ['estilo'] = '';
+				$atributos ["obligatorio"] = false;
+				$atributos ['marco'] = true;
+				$atributos ["etiqueta"] = "";
+				if (isset ( $_REQUEST [$esteCampo] )) {
+					$atributos ['valor'] = $_REQUEST [$esteCampo];
+				} else {
+					$atributos ['valor'] = '';
+				}
+				$atributos = array_merge ( $atributos, $atributosGlobales );
+				echo $this->miFormulario->campoCuadroTexto ( $atributos );
+				unset ( $atributos );
 				
 				// ---------------- CONTROL: Cuadro de Texto --------------------------------------------------------
 				$esteCampo = 'fecha_inicio_sub';
@@ -354,7 +365,7 @@
 			$valorCodificado .= "&pagina=" . $this->miConfigurador->getVariableConfiguracion ( 'pagina' );
 			$valorCodificado .= "&bloque=" . $esteBloque ['nombre'];
 			$valorCodificado .= "&bloqueGrupo=" . $esteBloque ["grupo"];
-			$valorCodificado .= "&opcion=ConsultarSolicitudes";
+			$valorCodificado .= "&opcion=ConsultarContratos";
 			$valorCodificado .= "&usuario=" . $_REQUEST ['usuario'];
 			/**
 			 * SARA permite que los nombres de los campos sean dinámicos.

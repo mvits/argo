@@ -20,7 +20,7 @@
 			    enablePagination: true,
 			    transitionEffect: "slideLeft",
 			    onStepChanging: function (event, currentIndex, newIndex){
-	                $resultado = $("#registrarContrato").validationEngine("validate");
+	                $resultado = $("#modificarContrato").validationEngine("validate");
 
 	        		if ($resultado) {
 
@@ -32,14 +32,14 @@
 			    onFinished: function (event, currentIndex)
 			    {
 			    	
-			    	 $("#registrarContrato").submit();
+			    	 $("#modificarContrato").submit();
 			        
 			    },
 			    labels: {
 			        cancel: "Cancelar",
 			        current: "Paso Siguiente :",
 			        pagination: "Paginación",
-			        finish: "Guardar Información",
+			        finish: "Actualizar Información",
 			        next: "Siquiente",
 			        previous: "Atras",
 			        loading: "Cargando ..."
@@ -52,7 +52,7 @@
 
 
 
-            $("#registrarContrato").validationEngine({
+            $("#modificarContrato").validationEngine({
             promptPosition : "bottomRight", 
             scroll: false,
             autoHidePrompt: true,
@@ -61,8 +61,8 @@
 
 
      $(function() {
-            $("#registrarContrato").submit(function() {
-		                $resultado = $("#registrarContrato").validationEngine("validate");
+            $("#modificarContrato").submit(function() {
+		                $resultado = $("#modificarContrato").validationEngine("validate");
 
 		if ($resultado) {
 

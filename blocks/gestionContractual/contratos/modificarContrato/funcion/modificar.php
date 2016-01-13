@@ -1,8 +1,8 @@
 <?php
 
-namespace contratos\registrarContrato\funcion;
+namespace contratos\modificarContrato\funcion;
 
-use contratos\registrarContrato\funcion\redireccion;
+use contratos\modificarContrato\funcion\redireccion;
 
 // include_once ('redireccionar.php');
 if (! isset ( $GLOBALS ["autorizado"] )) {
@@ -24,6 +24,8 @@ class RegistradorContrato {
 		$this->miFuncion = $funcion;
 	}
 	function procesarFormulario() {
+		
+		
 		$conexion = "contractual";
 		$esteRecursoDB = $this->miConfigurador->fabricaConexiones->getRecursoDB ( $conexion );
 		
@@ -84,6 +86,9 @@ class RegistradorContrato {
 			}
 			
 			$id_contratista = $_REQUEST ['id_contratista'];
+			
+
+			
 		} else {
 			
 			$arreglo_contratista = array (
@@ -127,9 +132,39 @@ class RegistradorContrato {
 			$id_contratista = $contratista [0] [0];
 		}
 		
-		$arreglo_contrato = array (
-				
-				"vigencia" => date ( 'Y' ),
+		
+		
+		$arreglo_Supervisor = array (
+					
+				"digito_supervisor" => $_REQUEST ['digito_supervisor'],
+				"id_funcionario" => $_REQUEST ['supervisor']
+		);
+			
+			
+		$cadenaSql = $this->miSql->getCadenaSql ( 'Actualizar_Supervisor', $arreglo_Supervisor );
+		$supervisor = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "acceso", $arreglo_Supervisor, 'Actualizar_Supervisor' );
+		
+		
+		$arreglo_SolicitudNecesidad = array (
+					
+				"objeto_contrato" => $_REQUEST ['objeto_contrato'],
+				"valor_contrato" => $_REQUEST ['valor_contrato'],
+				"dependencia" => $_REQUEST ['dependencia'],
+				"id_solicitud" => $_REQUEST ['id_solicitud_necesidad'],
+		);
+			
+			
+		$cadenaSql = $this->miSql->getCadenaSql ( 'Actualizar_Solicitud_necesidad', $arreglo_SolicitudNecesidad );
+		$supervisor = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "acceso", $arreglo_SolicitudNecesidad, 'Actualizar_Solicitud_necesidad' );
+		
+			
+			
+			
+		
+		
+		$arreglo_contrato = array(
+				"vigencia" => date ( 'Y-m-d' ),
+				"id_contrato"=>$_REQUEST['id_contrato'],
 				"numero_contrato" => $_REQUEST ['numero_contrato'],
 				"tipo_configuracion" => $_REQUEST ['tipo_configuracion'],
 				"clase_contratista" => $_REQUEST ['clase_contratista'],
@@ -164,8 +199,6 @@ class RegistradorContrato {
 				"observacionesContrato" => $_REQUEST ['observacionesContrato'],
 				"tipo_control" => $_REQUEST ['tipo_control'],
 				"supervisor" => $_REQUEST ['supervisor'],
-				"identificacion_supervisor" => $_REQUEST ['identificacion_supervisor'],
-				"digito_supervisor" => $_REQUEST ['digito_supervisor'],
 				"fecha_suscrip_super" => $_REQUEST ['fecha_suscrip_super'],
 				"fecha_limite" => $_REQUEST ['fecha_limite'],
 				"observaciones_interventoria" => $_REQUEST ['observaciones_interventoria'],
@@ -175,25 +208,19 @@ class RegistradorContrato {
 				"orden_contrato" => $_REQUEST ['id_orden_contrato'] 
 		);
 		
+		$cadenaSql = $this->miSql->getCadenaSql ( 'Actualizar_Contrato', $arreglo_contrato );
 		
-		$cadenaSql = $this->miSql->getCadenaSql ( 'registrar_contrato', $arreglo_contrato );
-		
-		$contrato = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "acceso", $arreglo_contrato, 'registrar_contrato' );
-		
+		$contrato = $esteRecursoDB->ejecutarAcceso ( $cadenaSql, "acceso", $arreglo_contrato, 'Actualizar_Contrato' );
 		
 		if ($contrato) {
+			redireccion::redireccionar( "Inserto", $arreglo_contrato );
 			
-			redireccion::redireccionar("Inserto",$arreglo_contrato);
-			exit;
-			
+			exit ();
 		} else {
+			redireccion::redireccionar( "ErrorRegistro" );
 			
-			redireccion::redireccionar("ErrorRegistro");
-			exit;
-			
+			exit ();
 		}
-		
-		
 	}
 }
 
